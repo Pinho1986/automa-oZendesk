@@ -1,34 +1,40 @@
 #VERSÃO ATUALIZADA A PRIMEIRA VERSÃO ESTÁ BARRANDO NO VERIFIADOR DE BOT DO CLOUDFAIRE - 
 #ESSA VERSÃO USA O undetected_chromedriveR QUE CONSEGUE PASSSAR PELA VERIFICAÇÃO 
+#-------------------------------V E R S Ã O 03 --------------------------------------
+#------------------------COM ESCOLHA DE INTERVALO DE DATA ----------------------------
+#------------------------CODIGO PASSANDO PELO DECTECTOR DE BOT------------------------ 
+
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from time import sleep
 import pyautogui
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import re
-from selenium.common.exceptions import NoSuchElementException
 import tkinter as tk
-from tkinter import simpledialog
 from tkcalendar import Calendar, DateEntry  # Importar DateEntry para seleção de intervalo
 
 def process_tickets(start_date, end_date):
     navegador = uc.Chrome()
 
     # Preparando o site
-    navegador.get("https://vsdata.zendesk.com/auth/v2/login")
+    navegador.get("SITE")
     pyautogui.press('enter')
     pyautogui.sleep(1)
 
-    pyautogui.write(SEU LOGIN')
+    pyautogui.write('LOG')
+    sleep(0.8)
+    pyautogui.write('LOG')
     pyautogui.press('enter')
     sleep(1)
-    pyautogui.write('SUA SENHA')
+    pyautogui.write('PASSWORD')
+    sleep(0.5)
+    pyautogui.write('PASSWORD')
+    sleep(1)
     pyautogui.press('enter')
     pyautogui.press('enter')
 
@@ -88,13 +94,26 @@ def process_tickets(start_date, end_date):
 
             tabela.to_excel('AtualizacaoPlanilhas.xlsx', index=False)
     navegador.quit()
+def centralizar_janela(janela, largura, altura):
+    # Obter as dimensões da tela
+    largura_tela = janela.winfo_screenwidth()
+    altura_tela = janela.winfo_screenheight()
+
+    # Calcular as coordenadas para centralizar a janela
+    x = (largura_tela // 2) - (largura // 2)
+    y = (altura_tela // 2) - (altura // 2)
+
+    # Definir a geometria da janela para centralizá-la
+    janela.geometry(f"{largura}x{altura}+{x}+{y}")    
 
 def get_date_input():
     Janela_Calendario = tk.Tk()
     Janela_Calendario.withdraw()  # Esconder a janela principal
-    Janela_Calendario.title("Vs Data")
+    Janela_Calendario.title("Vs Data - Automação Tickets Zendesk")
              
     top = tk.Toplevel(Janela_Calendario)
+    top.geometry("470x550")
+    centralizar_janela(top, 470, 550)
     
     #CONFIGURAÇÕES DO CALENDARIO 
     calendario_Inicio = Calendar(top, selectmode="day", year=datetime.now().year, month=datetime.now().month, day=datetime.now().day,
